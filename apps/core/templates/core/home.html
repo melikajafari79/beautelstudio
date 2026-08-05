@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}صفحه اصلی | سالن زیبایی الی{% endblock %}
+
+{% block content %}
+
+<!-- ============================================================
+     بخش Hero
+     تغییرات نسبت به نسخه‌ی قبل:
+     ۱) پس‌زمینه‌ی صاف bg-rose-50 با یک گرادیانت ملایم یاسی-بنفش + دو دایره‌ی محوِ
+        رنگی (blur) جایگزین شد تا به‌جای یک رنگ تخت، کمی عمق و اتمسفر به صفحه بدهد.
+     ۲) همه‌ی رنگ‌های لهجه (accent) از rose به amethyst تغییر کرد.
+     ۳) قاب تصویر از یک کارت چرخیده‌ی ساده (rounded-3xl + rotate-2) به یک قاب
+        ارگانیک (blob shape) با حلقه‌ی محوِ طلایی-بنفش پشت آن تغییر کرد تا حسِ
+        بوتیک/خاص داشته باشد، نه یک کارت استاندارد تیلویند.
+     ۴) کامنت مرده‌ی قبلی (کلاس object-cover کامنت‌شده) حذف شد.
+============================================================ -->
+<section class="relative overflow-hidden bg-gradient-to-b from-amethyst-50 via-[#FBF9FD] to-[#FBF9FD] py-20 lg:py-32">
+
+    <!-- دایره‌های محوِ تزئینی پشت محتوا؛ صرفاً تزئینی هستند، با aria-hidden از دید screen reader حذف شده‌اند -->
+    <div aria-hidden="true" class="absolute -top-24 -left-24 w-96 h-96 bg-amethyst-200/40 rounded-full blur-3xl"></div>
+    <div aria-hidden="true" class="absolute bottom-0 right-0 w-80 h-80 bg-gold-300/30 rounded-full blur-3xl"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+        <div class="space-y-6 text-center lg:text-right">
+            <span class="inline-flex items-center gap-2 text-amethyst-700 font-semibold tracking-wider text-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+                به سالن زیبایی الی خوش آمدید
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-amethyst-900 leading-tight">
+                زیبایی و درخشش شما، <br>
+                <span class="bg-gradient-to-l from-amethyst-600 to-gold-500 bg-clip-text text-transparent">تخصص ماست</span>
+            </h1>
+            <p class="text-stone-600 text-lg max-w-md mx-auto lg:mx-0">
+                در سالن زیبایی ما، بهترین خدمات آرایشی و مراقبتی را با استفاده از متریال درجه یک و توسط کادر مجرب تجربه کنید. همین امروز نوبت خود را آنلاین رزرو کنید.
+            </p>
+
+            <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
+                <a href="#" class="bg-amethyst-600 text-white px-8 py-3.5 rounded-full font-medium hover:bg-amethyst-700 transition shadow-md shadow-amethyst-200 focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">
+                    رزرو آنلاین نوبت
+                </a>
+                <a href="#" class="bg-white text-amethyst-800 border border-amethyst-200 px-8 py-3.5 rounded-full font-medium hover:bg-amethyst-50 transition shadow-sm focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">
+                    مشاهده خدمات
+                </a>
+            </div>
+        </div>
+
+        <div class="hidden lg:block relative">
+            <!-- حلقه‌ی محوِ طلایی-بنفش پشت قاب، به‌عنوان یک لایه‌ی تزئینیِ عمق‌ساز -->
+            <div aria-hidden="true" class="absolute -inset-4 bg-gradient-to-tr from-gold-300/50 to-amethyst-300/50 blur-2xl" style="border-radius: 40%;"></div>
+
+            <!-- قاب ارگانیک (blob) تصویر، به‌جای کارت ساده‌ی چرخیده‌ی نسخه‌ی قبل -->
+            <div class="relative w-full h-[450px] bg-amethyst-100 overflow-hidden shadow-xl border-4 border-white"
+                 style="border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;">
+                <img src="{% static 'images/logo.png' %}"
+                     alt="لوگوی سالن زیبایی الی"
+                     class="w-full h-full object-contain p-12">
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================================
+     بخش «چرا سالن ما؟»
+     تغییرات نسبت به نسخه‌ی قبل:
+     ۱) پس‌زمینه‌ی بخش به یک لایه‌ی یاسی بسیار ملایم (amethyst-50/60) تغییر کرد تا
+        از بخش Hero و از پس‌زمینه‌ی سفید معمولی متمایز شود و ریتم بصری بدهد.
+     ۲) بج‌های شماره‌دار ۱/۲/۳ حذف شدند — این سه مزیت یک توالی/فرایند واقعی نیستند،
+        پس شماره‌گذاری روی آن‌ها معنایی نداشت؛ به‌جایش از آیکونِ مرتبط با هر مزیت
+        استفاده شد (ستاره برای تخصص، قطره برای کیفیت، ساعت برای سرعت رزرو).
+     ۳) زیر عنوان بخش، یک خط باریک گرادیانت طلایی-بنفش (همان امضای برند در هدر/فوتر)
+        اضافه شد تا بخش‌ها به‌جای المان‌های جدا، حس یک طراحی یکپارچه بدهند.
+     ۴) به کارت‌ها افکت hover (سایه + رنگ بردر) اضافه شد تا تعاملی‌تر شوند.
+============================================================ -->
+<section class="py-20 bg-amethyst-50/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-extrabold text-amethyst-900 mb-3">چرا سالن ما؟</h2>
+        <div class="w-20 h-1 brand-rule rounded-full mx-auto mb-12"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-amethyst-100 hover:shadow-lg hover:border-amethyst-200 transition">
+                <div class="w-12 h-12 bg-gradient-to-br from-amethyst-100 to-amethyst-200 text-amethyst-700 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <!-- آیکون «تخصص» (ستاره) -->
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.05 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.538 1.118l-3.37-2.448a1 1 0 00-1.176 0l-3.37 2.448c-.783.57-1.838-.197-1.538-1.118l1.287-3.957a1 1 0 00-.364-1.118L1.063 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z"/></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-stone-800">پرسنل متخصص</h3>
+                <p class="text-stone-500 text-sm">همکاری با بهترین و باتجربه‌ترین آرایشگران و متخصصان پوست و مو.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-amethyst-100 hover:shadow-lg hover:border-amethyst-200 transition">
+                <div class="w-12 h-12 bg-gradient-to-br from-amethyst-100 to-amethyst-200 text-amethyst-700 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <!-- آیکون «کیفیت» (قطره) -->
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a6 6 0 006-6c0-3-2.5-6.5-6-10-3.5 3.5-6 7-6 10a6 6 0 006 6z"/></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-stone-800">مواد اولیه باکیفیت</h3>
+                <p class="text-stone-500 text-sm">استفاده از معتبرترین برندهای آرایشی و بهداشتی دنیا برای سلامت شما.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-amethyst-100 hover:shadow-lg hover:border-amethyst-200 transition">
+                <div class="w-12 h-12 bg-gradient-to-br from-amethyst-100 to-amethyst-200 text-amethyst-700 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <!-- آیکون «سرعت رزرو» (ساعت) -->
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2 text-stone-800">رزرو آسان و سریع</h3>
+                <p class="text-stone-500 text-sm">سیستم رزرو آنلاین ۲۴ ساعته بدون نیاز به تماس تلفنی و معطلی.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

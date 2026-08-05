@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}سالن زیبایی الی{% endblock %}</title>
+
+    <!-- ===== فونت فارسی Vazirmatn (گوگل فونت) =====
+         جایگزین فونت‌های پیش‌فرض sans/serif تیلویند شد، چون این‌ها برای فارسی
+         فونت اختصاصی ندارند و روی هر دستگاه ظاهر متفاوتی نشان می‌دهند.
+         Vazirmatn یک فونت فارسی مدرن با وزن‌های زیاد است که هم برای متن و
+         هم برای تیترها (با وزن سنگین‌تر) به‌خوبی جواب می‌دهد. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ===== تنظیمات سفارشی Tailwind: پالت رنگی «یاسی-بنفش» + فونت ===== -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'sans-serif'],
+                    },
+                    colors: {
+                        // طیف اصلی برند: بنفش/یاسی (amethyst). 600 رنگ اصلی دکمه‌ها و لینک‌هاست،
+                        // 900 برای پس‌زمینه‌های تیره (فوتر) و 50/100 برای پس‌زمینه‌های ملایم.
+                        amethyst: {
+                            50:  '#F8F4FC',
+                            100: '#F1E9F9',
+                            200: '#E3D2F2',
+                            300: '#CDA9E6',
+                            400: '#A972D1',
+                            500: '#8B4FBF',
+                            600: '#6D28D9',
+                            700: '#5B21B6',
+                            800: '#43178A',
+                            900: '#2C1B3D',
+                        },
+                        // رنگ طلایی کم‌رنگ؛ فقط به‌صورت لهجه‌ی تزئینی (نه رنگ اصلی) استفاده می‌شود
+                        // تا حس بوتیک/لوکس به برند بدهد، نه یک رنگ دوم رقیب با بنفش.
+                        gold: {
+                            300: '#EBDDB6',
+                            400: '#C9A66B',
+                            500: '#B8924F',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- ===== استایل کمکی =====
+         brand-rule: نوار باریک گرادیانتِ طلایی-بنفش؛ این خط، امضای بصری
+         تکرارشونده‌ی این طراحی است (در هدر، زیر تیترها و در فوتر دیده می‌شود).
+         prefers-reduced-motion: رعایت حال کاربرانی که حساس به انیمیشن‌اند. -->
+    <style>
+        .brand-rule {
+            background: linear-gradient(90deg, #6D28D9 0%, #C9A66B 50%, #6D28D9 100%);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body class="bg-[#FBF9FD] text-stone-700 font-sans">
+
+    <!-- ============================================================
+         HEADER
+         تغییرات نسبت به نسخه‌ی قبل:
+         ۱) لوگو به هدر اضافه شد و قبل از نام سالن قرار گرفت — چون صفحه RTL است،
+            اولین عنصر در کد HTML (لوگو) در سمت راست نمایش داده می‌شود.
+         ۲) تمام رنگ‌های rose با پالت amethyst (یاسی-بنفش) جایگزین شد.
+         ۳) نام سالن با افکت گرادیانت متنی (gradient text) برای حس لوکس‌تر نوشته شد.
+         ۴) یک نوار باریک گرادیانت طلایی-بنفش به‌عنوان امضای برند زیر هدر اضافه شد.
+         ۵) منوی موبایل (همبرگری) اضافه شد؛ نسخه‌ی قبلی در موبایل هیچ منویی نداشت
+            و این برای یک سایت حرفه‌ای ضروری است.
+    ============================================================ -->
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
+            <!-- لوگو + نام سالن (ترتیب: لوگو اول، نام دوم => در RTL لوگو سمت راست‌تر است) -->
+            <a href="#" class="flex items-center gap-3">
+                <img src="{% static 'images/logo.png' %}"
+                     alt="لوگوی سالن زیبایی الی"
+                     class="h-11 w-11 object-contain rounded-full ring-2 ring-amethyst-200 bg-amethyst-50 p-1">
+                <span class="text-2xl font-extrabold tracking-wide bg-gradient-to-l from-amethyst-700 to-amethyst-900 bg-clip-text text-transparent">
+                    سالن زیبایی الی
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#" class="text-amethyst-700 hover:text-amethyst-900 transition">صفحه اصلی</a>
+                <a href="#" class="text-stone-600 hover:text-amethyst-700 transition">خدمات سالن</a>
+                <a href="#" class="text-stone-600 hover:text-amethyst-700 transition">نمونه کارها</a>
+                <a href="#" class="text-stone-600 hover:text-amethyst-700 transition">درباره ما</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-4">
+                {% if user.is_authenticated %}
+                    <a href="#" class="text-sm font-medium text-stone-600 hover:text-amethyst-700 transition">داشبورد من</a>
+                    <a href="#" class="bg-amethyst-600 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-amethyst-700 transition shadow-sm shadow-amethyst-200 focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">رزرو نوبت</a>
+                {% else %}
+                    <a href="#" class="text-sm font-medium text-stone-600 hover:text-amethyst-700 transition">ورود</a>
+                    <a href="#" class="bg-amethyst-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-amethyst-800 transition shadow-sm focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">ثبت نام</a>
+                {% endif %}
+            </div>
+
+            <!-- دکمه‌ی منوی موبایل: فقط زیر md نمایش داده می‌شود -->
+            <button id="mobile-menu-btn" class="md:hidden text-amethyst-800 p-1" aria-label="باز کردن منو" aria-expanded="false" aria-controls="mobile-menu">
+                <svg id="icon-open" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- پنل منوی موبایل: پیش‌فرض بسته است، با کلیک روی دکمه‌ی بالا باز/بسته می‌شود -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-amethyst-100 bg-white px-4 pb-4 space-y-3">
+            <a href="#" class="block text-amethyst-700 font-medium py-1">صفحه اصلی</a>
+            <a href="#" class="block text-stone-600 py-1">خدمات سالن</a>
+            <a href="#" class="block text-stone-600 py-1">نمونه کارها</a>
+            <a href="#" class="block text-stone-600 py-1">درباره ما</a>
+            <div class="flex items-center gap-3 pt-2">
+                {% if user.is_authenticated %}
+                    <a href="#" class="text-sm text-stone-600">داشبورد من</a>
+                    <a href="#" class="bg-amethyst-600 text-white px-4 py-2 rounded-full text-sm">رزرو نوبت</a>
+                {% else %}
+                    <a href="#" class="text-sm text-stone-600">ورود</a>
+                    <a href="#" class="bg-amethyst-900 text-white px-4 py-2 rounded-full text-sm">ثبت نام</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- نوار باریک گرادیانت طلایی-بنفش: امضای بصری تکرارشونده‌ی برند -->
+        <div class="h-[3px] brand-rule"></div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- ============================================================
+         FOOTER
+         تغییرات نسبت به نسخه‌ی قبل:
+         ۱) پس‌زمینه از stone-900 (خاکستری خام) به amethyst-900 (بنفش تیره/مویی)
+            تغییر کرد تا با هویت برند هماهنگ باشد.
+         ۲) ساختار از یک ستون متن وسط‌چین، به یک گرید سه‌ستونه (برند / دسترسی سریع /
+            اطلاعات تماس) تغییر کرد — این یکی از واضح‌ترین نشانه‌های یک قالب خام در
+            مقابل یک طراحی حرفه‌ای است.
+         ۳) همان نوار باریک گرادیانت بالای فوتر برای یکدستی برند تکرار شده است.
+    ============================================================ -->
+    <footer class="bg-amethyst-900 text-amethyst-200 mt-20">
+        <div class="h-[3px] brand-rule"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 md:grid-cols-3 gap-10 text-right">
+
+            <!-- ستون برند -->
+            <div>
+                <p class="text-2xl font-extrabold text-white mb-3">مدیریت</p>
+                <p class="text-sm leading-7 text-amethyst-300">
+                    سرکار خانم الهه زمانی با هدف ارتقای سطح خدمات آرایشی و زیبایی، مدیریت سالن زیبایی الی را بر عهده دارد تا تجربه‌ای بی‌نقص و متفاوت از زیبایی را برای شما خلق کند.
+                </p>
+            </div>
+
+            <!-- ستون دسترسی سریع -->
+            <div>
+                <p class="text-white font-bold mb-4">دسترسی سریع</p>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-gold-400 transition">خدمات سالن</a></li>
+                    <li><a href="#" class="hover:text-gold-400 transition">نمونه کارها</a></li>
+                    <li><a href="#" class="hover:text-gold-400 transition">رزرو نوبت</a></li>
+                    <li><a href="#" class="hover:text-gold-400 transition">درباره ما</a></li>
+                </ul>
+            </div>
+
+            <!-- ستون اطلاعات تماس -->
+            <div>
+                <p class="text-white font-bold mb-4">اطلاعات تماس</p>
+                <p class="text-sm leading-7 text-amethyst-300">
+                    آدرس: فارس - آباده - چهار راه دهخدا - روبروی مسجد مطهری - طبقه زیرین تالار بورس - سالن زیبایی الی
+                </p>
+                <p class="text-sm mt-2 text-amethyst-300">
+                    شماره تماس: <span class="text-white">۰۹۱۷۳۰۳۱۲۳۳</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="border-t border-amethyst-800">
+            <p class="text-center text-xs text-amethyst-400 py-5">© ۲۰۲۶ تمامی حقوق برای سالن زیبایی الی محفوظ است.</p>
+        </div>
+    </footer>
+
+    <!-- ===== اسکریپت باز/بسته‌کردن منوی موبایل (بدون نیاز به کتابخانه‌ی خارجی) ===== -->
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const iconOpen = document.getElementById('icon-open');
+        const iconClose = document.getElementById('icon-close');
+
+        menuBtn.addEventListener('click', () => {
+            const isOpen = !menu.classList.contains('hidden');
+            menu.classList.toggle('hidden');
+            iconOpen.classList.toggle('hidden');
+            iconClose.classList.toggle('hidden');
+            menuBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+    </script>
+
+</body>
+</html>
