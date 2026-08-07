@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ service.name }} | سالن زیبایی الی{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- مسیر صفحه (Breadcrumb) -->
+    <nav class="text-sm text-amethyst-600 mb-8" aria-label="مسیر صفحه">
+        <a href="/" class="hover:underline">خانه</a>
+        <span class="mx-1 text-amethyst-300">/</span>
+        <a href="{% url 'services:service_list' %}" class="hover:underline">خدمات</a>
+        <span class="mx-1 text-amethyst-300">/</span>
+        <a href="{% url 'services:service_list' %}?category={{ service.category.slug }}" class="hover:underline">{{ service.category.name }}</a>
+        <span class="mx-1 text-amethyst-300">/</span>
+        <span class="text-amethyst-900 font-medium">{{ service.name }}</span>
+    </nav>
+
+    <!-- ============================================================
+         بخش اصلی: تصویر + جزئیات
+         عمداً چیدمان «تصویر ابتدا، جزئیات بعد» (برخلاف Hero صفحه‌ی
+         اصلی که متن ابتدا بود) انتخاب شده — این الگوی متداول صفحات
+         محصول/خدمت است، چون مشتری اول می‌خواهد نتیجه‌ی کار را ببیند.
+         رنگ‌بندی و تایپوگرافی همچنان دقیقاً همان سیستم یاسی-بنفش است.
+    ============================================================ -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+
+        <!-- تصویر -->
+        <div class="relative">
+            <div class="w-full h-[420px] bg-amethyst-50 rounded-3xl overflow-hidden shadow-md border-4 border-white">
+                {% if service.image %}
+                    <img src="{{ service.image.url }}" alt="{{ service.name }}" class="w-full h-full object-cover">
+                {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-amethyst-100 to-amethyst-50">
+                        <svg class="w-16 h-16 text-amethyst-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                {% endif %}
+            </div>
+            {% if service.discount_price %}
+                <span class="absolute top-6 right-6 bg-gold-500 text-white text-sm font-bold px-3.5 py-1.5 rounded-full shadow-md">تخفیف ویژه</span>
+            {% endif %}
+        </div>
+
+        <!-- جزئیات -->
+        <div>
+            <a href="{% url 'services:service_list' %}?category={{ service.category.slug }}"
+               class="inline-block text-sm font-semibold text-amethyst-600 hover:underline mb-3">
+                {{ service.category.name }}
+            </a>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-amethyst-900 mb-4">{{ service.name }}</h1>
+
+            {% if service.description %}
+                <p class="text-stone-600 leading-8 mb-6">{{ service.description }}</p>
+            {% endif %}
+
+            <!-- قیمت -->
+            <div class="flex items-center gap-3 mb-6">
+                {% if service.discount_price %}
+                    <span class="text-lg text-stone-400 line-through">{{ service.base_price|intcomma }} تومان</span>
+                {% endif %}
+                <span class="text-3xl font-extrabold bg-gradient-to-l from-amethyst-600 to-gold-500 bg-clip-text text-transparent">
+                    {{ service.final_price|intcomma }} تومان
+                </span>
+            </div>
+
+            <!-- مدت زمان -->
+            <div class="flex items-center gap-2 text-stone-600 mb-6">
+                <svg class="w-5 h-5 text-amethyst-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>
+                    {% if service.is_parallel and service.duration == 0 %}
+                        این خدمت زمان انعطاف‌پذیر دارد و بدون اشغال نوبت جداگانه انجام می‌شود.
+                    {% else %}
+                        مدت‌زمان تقریبی: <strong class="text-stone-800">{{ service.duration }} دقیقه</strong>
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- اعلان‌های اطلاعاتی (نه هشدار؛ فقط شفاف‌سازی برای مشتری) -->
+            {% if service.requires_staff_confirmation or service.requires_deposit %}
+                <div class="space-y-3 mb-8">
+                    {% if service.requires_staff_confirmation %}
+                        <div class="flex items-start gap-3 bg-amethyst-50 border border-amethyst-100 rounded-xl p-4 text-sm text-amethyst-800">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5 text-amethyst-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>این خدمت نیاز به تأیید پرسنل دارد؛ نوبت شما پس از ثبت، توسط سالن بررسی و تأیید می‌شود.</span>
+                        </div>
+                    {% endif %}
+                    {% if service.requires_deposit %}
+                        <div class="flex items-start gap-3 bg-gold-300/20 border border-gold-400/40 rounded-xl p-4 text-sm text-amethyst-800">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 10v2"/>
+                            </svg>
+                            <span>
+                                این خدمت نیازمند پرداخت بیعانه است
+                                {% if service.deposit_amount %}(مبلغ: {{ service.deposit_amount|intcomma }} تومان){% endif %}.
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- دکمه‌ی رزرو: فعلاً placeholder — تا زمانی که فرم/فرآیند رزرو در اپ booking آماده شود -->
+            <a href="#" class="inline-block w-full sm:w-auto text-center bg-amethyst-600 text-white px-10 py-4 rounded-full font-medium hover:bg-amethyst-700 transition shadow-md shadow-amethyst-200">
+                رزرو این خدمت
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         خدمات مرتبط
+         همان کارت گرید صفحه‌ی لیست، از طریق include دوباره استفاده شده
+         تا ظاهر کاملاً یکدست بماند و کدی تکراری نوشته نشود.
+    ============================================================ -->
+    {% if related_services %}
+        <div class="mt-20">
+            <h2 class="text-2xl font-extrabold text-amethyst-900 mb-2">خدمات مرتبط</h2>
+            <div class="w-16 h-1 brand-rule rounded-full mb-8"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for related in related_services %}
+                    {% include 'services/_service_card.html' with service=related %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

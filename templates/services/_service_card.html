@@ -1,0 +1,75 @@
+{% load humanize %}
+{#
+    templates/services/_service_card.html
+    کارت خدمت — قابل‌استفاده‌ی مجدد در service_list.html و بخش «خدمات مرتبط» در service_detail.html
+    انتظار می‌رود متغیر «service» از قالب فراخواننده پاس داده شود:
+    {% include 'services/_service_card.html' with service=service %}
+#}
+<div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-amethyst-100 hover:shadow-lg hover:border-amethyst-200 transition flex flex-col h-full">
+
+    <a href="{% url 'services:service_detail' slug=service.slug %}" class="block relative h-48 bg-amethyst-50 overflow-hidden">
+        {% if service.image %}
+            <img src="{{ service.image.url }}" alt="{{ service.name }}"
+                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        {% else %}
+            <!-- حالت جایگزین وقتی خدمت هنوز تصویر ندارد؛ به‌جای شکسته‌نمایی آیکون، یک پس‌زمینه‌ی برند‌دار نمایش داده می‌شود -->
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-amethyst-100 to-amethyst-50">
+                <svg class="w-10 h-10 text-amethyst-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+        {% endif %}
+
+        {% if service.discount_price %}
+            <span class="absolute top-3 right-3 bg-gold-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">تخفیف ویژه</span>
+        {% endif %}
+    </a>
+
+    <div class="p-5 flex flex-col flex-1">
+        <a href="{% url 'services:service_list' %}?category={{ service.category.slug }}"
+           class="text-xs font-semibold text-amethyst-600 mb-1 hover:underline w-fit">
+            {{ service.category.name }}
+        </a>
+
+        <a href="{% url 'services:service_detail' slug=service.slug %}">
+            <h3 class="text-lg font-bold text-stone-800 mb-2 group-hover:text-amethyst-700 transition">{{ service.name }}</h3>
+        </a>
+
+        {% if service.description %}
+            <p class="text-sm text-stone-500 mb-4 line-clamp-2 flex-1">{{ service.description }}</p>
+        {% else %}
+            <div class="flex-1"></div>
+        {% endif %}
+
+        <div class="flex items-center gap-3 mb-4 text-xs text-stone-500">
+            <span class="inline-flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {% if service.is_parallel and service.duration == 0 %}زمان انعطاف‌پذیر{% else %}{{ service.duration }} دقیقه{% endif %}
+            </span>
+            {% if service.requires_staff_confirmation %}
+                <span class="inline-flex items-center gap-1 text-gold-600" title="نیاز به تأیید پرسنل">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    نیاز به تأیید
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="flex items-end justify-between mt-auto pt-4 border-t border-amethyst-50">
+            <div>
+                {% if service.discount_price %}
+                    <span class="block text-xs text-stone-400 line-through">{{ service.base_price|intcomma }} تومان</span>
+                {% endif %}
+                <span class="text-amethyst-700 font-extrabold text-lg">{{ service.final_price|intcomma }}</span>
+                <span class="text-xs text-stone-400">تومان</span>
+            </div>
+            <a href="{% url 'services:service_detail' slug=service.slug %}"
+               class="bg-amethyst-600 text-white text-sm px-4 py-2 rounded-full hover:bg-amethyst-700 transition shadow-sm shadow-amethyst-200">
+                مشاهده
+            </a>
+        </div>
+    </div>
+</div>

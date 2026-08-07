@@ -6,6 +6,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.core.urls', namespace='core')), # اتصال صفحه اصلی
+    path('services/', include('apps.services.urls', namespace='services')),
 ]
 
 if settings.DEBUG:

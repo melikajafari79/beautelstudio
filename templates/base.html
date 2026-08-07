@@ -93,8 +93,8 @@
             </a>
 
             <nav class="hidden md:flex items-center gap-8 font-medium">
-                <a href="#" class="text-amethyst-700 hover:text-amethyst-900 transition">صفحه اصلی</a>
-                <a href="#" class="text-stone-600 hover:text-amethyst-700 transition">خدمات سالن</a>
+                <a href="{% url 'core:home' %}" class="text-amethyst-700 hover:text-amethyst-900 transition">صفحه اصلی</a>
+                <a href="{% url 'services:service_list' %}" class="text-stone-600 hover:text-amethyst-700 transition">خدمات سالن</a>
                 <a href="#" class="text-stone-600 hover:text-amethyst-700 transition">نمونه کارها</a>
                 <a href="#" class="text-stone-600 hover:text-amethyst-700 transition">درباره ما</a>
             </nav>
