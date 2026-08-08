@@ -57,13 +57,30 @@
             {% endif %}
 
             <!-- قیمت -->
+            <!-- قیمت -->
             <div class="flex items-center gap-3 mb-6">
-                {% if service.discount_price %}
-                    <span class="text-lg text-stone-400 line-through">{{ service.base_price|intcomma }} تومان</span>
+                {% with price=service.public_price_display %}
+                {% if price %}
+                    {% if price.mode == 'range' %}
+                        <span class="text-3xl font-extrabold bg-gradient-to-l from-amethyst-600 to-gold-500 bg-clip-text text-transparent">
+                            از {{ price.min|intcomma }} تا {{ price.max|intcomma }} تومان
+                        </span>
+                    {% else %}
+                        {% if price.discount_price %}
+                            <span class="text-lg text-stone-400 line-through">{{ price.price|intcomma }} تومان</span>
+                            <span class="text-3xl font-extrabold bg-gradient-to-l from-amethyst-600 to-gold-500 bg-clip-text text-transparent">
+                                {{ price.discount_price|intcomma }} تومان
+                            </span>
+                        {% else %}
+                            <span class="text-3xl font-extrabold bg-gradient-to-l from-amethyst-600 to-gold-500 bg-clip-text text-transparent">
+                                {{ price.price|intcomma }} تومان
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <span class="text-xl font-bold text-amethyst-700">برای اطلاع از قیمت تماس بگیرید</span>
                 {% endif %}
-                <span class="text-3xl font-extrabold bg-gradient-to-l from-amethyst-600 to-gold-500 bg-clip-text text-transparent">
-                    {{ service.final_price|intcomma }} تومان
-                </span>
+                {% endwith %}
             </div>
 
             <!-- مدت زمان -->

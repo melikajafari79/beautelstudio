@@ -1,10 +1,5 @@
 {% load humanize %}
-{#
-    templates/services/_service_card.html
-    کارت خدمت — قابل‌استفاده‌ی مجدد در service_list.html و بخش «خدمات مرتبط» در service_detail.html
-    انتظار می‌رود متغیر «service» از قالب فراخواننده پاس داده شود:
-    {% include 'services/_service_card.html' with service=service %}
-#}
+
 <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-amethyst-100 hover:shadow-lg hover:border-amethyst-200 transition flex flex-col h-full">
 
     <a href="{% url 'services:service_detail' slug=service.slug %}" class="block relative h-48 bg-amethyst-50 overflow-hidden">
@@ -59,13 +54,26 @@
         </div>
 
         <div class="flex items-end justify-between mt-auto pt-4 border-t border-amethyst-50">
+            {% with price=service.public_price_display %}
             <div>
-                {% if service.discount_price %}
-                    <span class="block text-xs text-stone-400 line-through">{{ service.base_price|intcomma }} تومان</span>
+                {% if price %}
+                    {% if price.mode == 'range' %}
+                        <span class="text-amethyst-700 font-extrabold text-lg">{{ price.min|intcomma }} - {{ price.max|intcomma }}</span>
+                        <span class="text-xs text-stone-400">تومان</span>
+                    {% else %}
+                        {% if price.discount_price %}
+                            <span class="block text-xs text-stone-400 line-through">{{ price.price|intcomma }} تومان</span>
+                            <span class="text-amethyst-700 font-extrabold text-lg">{{ price.discount_price|intcomma }}</span>
+                        {% else %}
+                            <span class="text-amethyst-700 font-extrabold text-lg">{{ price.price|intcomma }}</span>
+                        {% endif %}
+                        <span class="text-xs text-stone-400">تومان</span>
+                    {% endif %}
+                {% else %}
+                    <span class="text-sm text-amethyst-600 font-medium">تماس بگیرید</span>
                 {% endif %}
-                <span class="text-amethyst-700 font-extrabold text-lg">{{ service.final_price|intcomma }}</span>
-                <span class="text-xs text-stone-400">تومان</span>
             </div>
+            {% endwith %}
             <a href="{% url 'services:service_detail' slug=service.slug %}"
                class="bg-amethyst-600 text-white text-sm px-4 py-2 rounded-full hover:bg-amethyst-700 transition shadow-sm shadow-amethyst-200">
                 مشاهده

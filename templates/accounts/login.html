@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}ورود | سالن زیبایی الی{% endblock %}
+
+{% block content %}
+
+<section class="relative overflow-hidden bg-gradient-to-b from-amethyst-50 via-[#FBF9FD] to-[#FBF9FD] pt-14 pb-24">
+    <div aria-hidden="true" class="absolute -top-20 -left-20 w-72 h-72 bg-amethyst-200/40 rounded-full blur-3xl"></div>
+    <div aria-hidden="true" class="absolute top-0 right-0 w-64 h-64 bg-gold-300/30 rounded-full blur-3xl"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <nav class="text-sm text-amethyst-600 mb-4" aria-label="مسیر صفحه">
+            <a href="{% url 'core:home' %}" class="hover:underline">خانه</a>
+            <span class="mx-1 text-amethyst-300">/</span>
+            <span class="text-amethyst-900 font-medium">ورود</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-amethyst-900 mb-3">ورود به حساب کاربری</h1>
+        <p class="text-stone-600 max-w-xl mx-auto">
+            با شماره موبایل و رمز عبورتان وارد شوید.
+        </p>
+    </div>
+</section>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative -mt-12 max-w-md mx-auto bg-white rounded-2xl shadow-lg border border-amethyst-100 p-6 sm:p-8 z-10">
+
+        {% if form.non_field_errors %}
+            <div class="mb-5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm p-4">
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+
+            {% include 'accounts/_form_field.html' with field=form.phone_number %}
+            {% include 'accounts/_form_field.html' with field=form.password %}
+
+            <div class="text-left mb-5 -mt-2">
+                <a href="{% url 'accounts:forgot_password' %}" class="text-sm text-amethyst-600 hover:underline">رمز عبور را فراموش کرده‌اید؟</a>
+            </div>
+
+            <button type="submit"
+                    class="w-full h-12 bg-amethyst-600 text-white rounded-full font-medium hover:bg-amethyst-700 transition shadow-sm shadow-amethyst-200 focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">
+                ورود
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-stone-500 mt-6">
+            هنوز حساب کاربری نساخته‌اید؟
+            <a href="{% url 'accounts:register' %}" class="text-amethyst-700 font-medium hover:underline">ثبت‌نام کنید</a>
+        </p>
+    </div>
+    <div class="pb-16"></div>
+</div>
+{% endblock %}

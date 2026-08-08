@@ -1,0 +1,24 @@
+{% comment %}
+templates/accounts/_form_field.html
+پارشیال مشترک برای نمایش یک فیلد فرم: لیبل + ورودی + متن راهنما + خطاها.
+این‌طوری ظاهر همه‌ی فرم‌های اپ accounts (ثبت‌نام، ورود، فراموشی رمز، ...)
+دقیقاً یکسان می‌ماند و برای افزودن فیلد جدید در آینده هم کافی است
+همین یک include تکرار شود.
+{% endcomment %}
+<div class="mb-5">
+    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1.5">
+        {{ field.label }}{% if field.field.required %}<span class="text-amethyst-600"> *</span>{% endif %}
+    </label>
+    {{ field }}
+    {% if field.help_text %}
+        <p class="text-xs text-stone-400 mt-1">{{ field.help_text }}</p>
+    {% endif %}
+    {% for error in field.errors %}
+        <p class="text-xs text-red-600 mt-1.5 flex items-center gap-1">
+            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+            </svg>
+            {{ error }}
+        </p>
+    {% endfor %}
+</div>

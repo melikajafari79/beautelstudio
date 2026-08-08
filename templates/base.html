@@ -102,10 +102,14 @@
             <div class="hidden md:flex items-center gap-4">
                 {% if user.is_authenticated %}
                     <a href="#" class="text-sm font-medium text-stone-600 hover:text-amethyst-700 transition">داشبورد من</a>
+                    <form method="post" action="{% url 'accounts:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-sm font-medium text-stone-600 hover:text-amethyst-700 transition">خروج</button>
+                    </form>
                     <a href="#" class="bg-amethyst-600 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-amethyst-700 transition shadow-sm shadow-amethyst-200 focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">رزرو نوبت</a>
                 {% else %}
-                    <a href="#" class="text-sm font-medium text-stone-600 hover:text-amethyst-700 transition">ورود</a>
-                    <a href="#" class="bg-amethyst-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-amethyst-800 transition shadow-sm focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">ثبت نام</a>
+                    <a href="{% url 'accounts:login' %}" class="text-sm font-medium text-stone-600 hover:text-amethyst-700 transition">ورود</a>
+                    <a href="{% url 'accounts:register' %}" class="bg-amethyst-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-amethyst-800 transition shadow-sm focus-visible:ring-2 focus-visible:ring-amethyst-400 focus-visible:ring-offset-2">ثبت نام</a>
                 {% endif %}
             </div>
 
@@ -118,17 +122,21 @@
 
         <!-- پنل منوی موبایل: پیش‌فرض بسته است، با کلیک روی دکمه‌ی بالا باز/بسته می‌شود -->
         <div id="mobile-menu" class="hidden md:hidden border-t border-amethyst-100 bg-white px-4 pb-4 space-y-3">
-            <a href="#" class="block text-amethyst-700 font-medium py-1">صفحه اصلی</a>
-            <a href="#" class="block text-stone-600 py-1">خدمات سالن</a>
+            <a href="{% url 'core:home' %}" class="block text-amethyst-700 font-medium py-1">صفحه اصلی</a>
+            <a href="{% url 'services:service_list' %}" class="block text-stone-600 py-1">خدمات سالن</a>
             <a href="#" class="block text-stone-600 py-1">نمونه کارها</a>
             <a href="#" class="block text-stone-600 py-1">درباره ما</a>
             <div class="flex items-center gap-3 pt-2">
                 {% if user.is_authenticated %}
                     <a href="#" class="text-sm text-stone-600">داشبورد من</a>
                     <a href="#" class="bg-amethyst-600 text-white px-4 py-2 rounded-full text-sm">رزرو نوبت</a>
+                    <form method="post" action="{% url 'accounts:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-sm text-stone-600">خروج</button>
+                    </form>
                 {% else %}
-                    <a href="#" class="text-sm text-stone-600">ورود</a>
-                    <a href="#" class="bg-amethyst-900 text-white px-4 py-2 rounded-full text-sm">ثبت نام</a>
+                    <a href="{% url 'accounts:login' %}" class="text-sm text-stone-600">ورود</a>
+                    <a href="{% url 'accounts:register' %}" class="bg-amethyst-900 text-white px-4 py-2 rounded-full text-sm">ثبت نام</a>
                 {% endif %}
             </div>
         </div>
@@ -136,6 +144,26 @@
         <!-- نوار باریک گرادیانت طلایی-بنفش: امضای بصری تکرارشونده‌ی برند -->
         <div class="h-[3px] brand-rule"></div>
     </header>
+
+    <!-- ============================================================
+         پیام‌های سیستمی (django.contrib.messages)
+         محل نمایش پیام‌هایی مثل «کد تایید پیامک شد» یا خطاهای فرم‌های
+         سطح صفحه که از طریق messages.success/info/warning/error در
+         view ها فرستاده می‌شوند.
+    ============================================================ -->
+    {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-3">
+            {% for message in messages %}
+                <div class="rounded-xl border p-4 text-sm
+                    {% if message.tags == 'success' %} bg-green-50 border-green-200 text-green-700
+                    {% elif message.tags == 'error' %} bg-red-50 border-red-200 text-red-700
+                    {% elif message.tags == 'warning' %} bg-amber-50 border-amber-200 text-amber-700
+                    {% else %} bg-amethyst-50 border-amethyst-200 text-amethyst-800 {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <main>
         {% block content %}

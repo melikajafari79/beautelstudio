@@ -9,6 +9,13 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# آدرس‌های استاندارد جنگو برای احراز هویت. LOGIN_URL برای این لازم است که
+# اگر در آینده از دکوراتور @login_required روی صفحاتی مثل پنل مشتری
+# استفاده شود، کاربرِ واردنشده به‌جای خطا، به همین صفحه‌ی ورود هدایت شود.
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'core:home'
+LOGOUT_REDIRECT_URL = 'core:home'
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -19,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django_jalali',
 
     'apps.core',
     'apps.accounts',
@@ -90,3 +98,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# بدون این تنظیم، هیچ اعتبارسنجی قدرت رمز عبوری اعمال نمی‌شود (رمزهایی مثل
+# «password» یا «12345678» پذیرفته می‌شوند)، چون خلاف تصور رایج، جنگو این
+# چهار اعتبارسنج را به‌صورت پیش‌فرض framework-level فعال نمی‌کند؛ این‌ها فقط
+# در قالب پیش‌فرض startproject نوشته می‌شوند. صفحه‌ی ثبت‌نام/ویرایش رمز این
+# پروژه از django.contrib.auth.password_validation.validate_password استفاده
+# می‌کند، پس این تنظیم برای فعال بودن واقعیِ آن اعتبارسنجی ضروری است.
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', 'OPTIONS': {'min_length': 8}},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
